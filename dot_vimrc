@@ -1,0 +1,178 @@
+" Enable syntax highlighting
+syntax on
+
+" Default indentation settings
+set tabstop=4      " Set tab width to 4 spaces
+set shiftwidth=4   " Use 4 spaces for indentation
+set softtabstop=4  " Number of spaces a tab counts for when editing
+set expandtab      " Convert tabs to spaces when typing them
+
+" The following section configures search settings
+set ignorecase     " Ignore case when searching
+set smartcase      " Override ignorecase if search contains uppercase
+
+" Filetype-specific indentation
+autocmd FileType python setlocal tabstop=4 shiftwidth=4 expandtab " Python
+autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 expandtab " JavaScript
+autocmd FileType go setlocal tabstop=4 shiftwidth=4 noexpandtab " Go uses tabs
+autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab " C
+autocmd FileType cpp setlocal tabstop=2 shiftwidth=2 expandtab " C++
+autocmd FileType swift setlocal tabstop=4 shiftwidth=4 expandtab " Swift
+autocmd FileType dart setlocal tabstop=2 shiftwidth=2 expandtab  " Dart
+autocmd FileType kotlin setlocal tabstop=4 shiftwidth=4 expandtab " Kotlin
+autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 expandtab " Ruby
+autocmd FileType rust setlocal tabstop=4 shiftwidth=4 expandtab " Rust
+autocmd FileType sh,bash,zsh setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab " Shell scripts
+autocmd FileType asm setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab " Assembly
+autocmd FileType sql setlocal tabstop=4 shiftwidth=4 noexpandtab " SQL uses tabs
+
+" Formatter commands for manual formatting
+autocmd FileType sh,bash,zsh command! -buffer FormatShfmt %!shfmt -i 2
+autocmd FileType kotlin command! -buffer FormatKtlint %!ktlint --format
+autocmd FileType ruby command! -buffer FormatRuboCop %!rubocop -a
+autocmd FileType rust command! -buffer FormatRustfmt %!rustfmt
+
+" Command to toggle between tabs and spaces
+command! UseTabs set noexpandtab
+command! UseSpaces set expandtab
+
+" Uncomment this to fix indentation when saving files
+"autocmd BufWritePre * :retab
+
+" Restores Cursor to last position
+" for specific file extensions.
+function! RestoreCursor()
+  if line("'\"") > 0 && line("'\"") <= line("$")
+    execute "normal! g`\""
+  endif
+endfunction
+
+augroup restore_cursor
+  autocmd!
+  autocmd BufReadPost *.go,*.asm,*.c,*.cpp,*.h,*.py,*.dart,*.sh,*.zsh call RestoreCursor()
+augroup END
+"=== End Restore Cursor Logic ==="
+
+call plug#begin('~/.vim/plugged')
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug '/opt/homebrew/opt/fzf'
+"Folding Plugins
+Plug 'tmhedberg/SimpylFold'
+Plug 'octol/vim-cpp-enhanced-highlight'
+call plug#end()
+
+" --- Enhanced :set list command as \lst
+" Define how invisible characters are shown
+set listchars=tab:→·,trail:·,nbsp:␣
+" Toggle display of invisible characters
+nnoremap <leader>lst :set list!<CR>
+" Uncomment the next line to increase timeout after you hit \
+" set timeoutlen=2000
+
+" --- Global fold defaults ---
+" Start with folds open (unless overridden)
+set foldlevelstart=99
+" Remap space key to toggle fold command
+nnoremap <space> za
+
+" --- Folding configuration ---
+augroup FoldingConfigs
+  autocmd!
+
+  " --- Python: use SimpylFold ---
+  autocmd FileType python setlocal foldmethod=indent
+  autocmd FileType python setlocal foldlevel=99
+  let g:SimpylFold_docstring_preview = 1
+
+  " --- C / C++: use vim-cpp-enhanced-highlight ---
+  autocmd FileType c,cpp setlocal foldmethod=syntax
+  autocmd FileType c,cpp setlocal foldlevel=1
+
+  " --- C /C++: remember fold states ---
+  autocmd BufWinLeave *.c,*.cpp mkview
+  autocmd BufWinEnter *.c,*.cpp silent! loadview
+augroup END
+
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#fugitive#enabled = 1
+let g:airline_theme = 'understated'
+
+" Customize fzf colors to match your color scheme
+" - fzf#wrap translates this to a set of `--color` options
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'query':   ['fg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Statement'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+"===
+" Logic for FZF autorun
+"===
+function! ShouldRunFZF() abort
+  " Don't run if files were passed
+  if argc() > 0
+    return 0
+  endif
+
+  " Don't run if current directory is root
+  if getcwd() ==# '/'
+    return 0
+  endif
+
+  " Define a whitelist of folders (modify this to your liking)
+  let allowed_folders = [
+        \ '~/Desktop',
+        \ '~/Documents',
+        \ '~/Library/CloudStorage/Dropbox/',
+        \ '~/Library/Mobile Documents/com~apple~CloudDocs/'
+        \ ]
+
+  " Resolve the current working directory to full path
+  let cwd = fnamemodify(getcwd(), ':p')
+
+  for dir in allowed_folders
+    let abs_dir = fnamemodify(expand(dir), ':p')   " ~/Desktop/ → /home/user/Desktop/
+
+    let pattern = '^' . escape(abs_dir, '\.^$~[]*')
+
+    if dir[-1:] ==# '/'          " Strict mode (ends with /)
+      " We must be strictly inside this folder, i.e. cwd must start with abs_dir
+      " AND cwd must NOT be exactly abs_dir
+      if (cwd =~# pattern) && (cwd !=# abs_dir)
+        return 1
+      endif
+    else                          " Normal mode
+      if (cwd =~# pattern)
+        return 1
+      endif
+    endif
+  endfor
+
+  " Otherwise don't run
+  return 0
+endfunction
+
+augroup AutoFZFOnStart
+  autocmd!
+  autocmd VimEnter * if ShouldRunFZF() | call feedkeys(":silent! FZF\<CR>", 'n') | endif
+augroup END
+"=== End launch FZF Logic ==="
+
+" My Fav Themes
+" let g:airline_theme = 'papercolor'
+" let g:airline_theme = 'cool'
+" let g:airline_theme = 'qwq'
+" let g:airline_theme = 'term'
+" let g:airline_theme = 'understated'
