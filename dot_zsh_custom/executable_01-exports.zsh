@@ -1,0 +1,38 @@
+# Common Exports
+export GPG_TTY=$(tty)
+export GPG_KEY_ID="put-your-gpg-key-here"
+export GOPRIVATE=github.com/moisoto/utils,github.com/MotivAIO/Jupiter-DB,github.com/MotivAIO/MotivDocsy
+export PATH=/opt/homebrew/opt/python3/bin:$PATH
+export BAT_THEME="Visual Studio Dark+"
+export BAT_STYLE="plain"
+export ZSH_TMUX_AUTONAME_SESSION="true"
+export ZSH_TMUX_DEFAULT_SESSION_NAME="default"
+[[ "$TERM_PROGRAM" == "iTerm.app" ]] && export ZSH_TMUX_ITERM2="true"
+
+# Set path to .local if neccesary
+if [[ -d "$HOME/.local" ]]; then
+  case ":${PATH}:" in
+    *:"$HOME/.local/bin":*)
+      ;;
+    *)
+      # Prepending path in case a system-installed binary needs to be overridden
+      export PATH="$HOME/.local/bin:$PATH"
+      ;;
+  esac
+fi
+
+# Gemini Setings
+export GEMINI_API_KEY="put-your-gemini-apikey-here"
+export GOOGLE_GENAI_USE_VERTEXAI=true
+
+# Set EDITOR (mainly for glow to know what to use)
+export EDITOR=vim
+
+# My Libraries
+export DYLD_LIBRARY_PATH="/opt/homebrew/lib:/opt/homebrew/opt/freetds/lib:$DYLD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/opt/homebrew/lib:/opt/homebrew/opt/freetds/lib:$LD_LIBRARY_PATH"
+export ODBCINI="/opt/homebrew/etc/odbc.ini"
+export ODBCSYSINI="/opt/homebrew/etc"
+export FREETDS_DIR=$(brew --prefix freetds)
+export LDFLAGS="-L/opt/homebrew/opt/freetds/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/freetds/include"
