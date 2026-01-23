@@ -1,0 +1,4 @@
+{{- if .config.secrets.gpg_defkey -}}
+default-key {{ .config.secrets.gpg_defkey }}
+{{- end }}
+keyserver hkps://keys.openpgp.org
