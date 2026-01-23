@@ -1,0 +1,35 @@
+# New Window starts at home (default setting)
+#working-directory = home
+
+# New Windows and Tabs will not inherit current directory
+window-inherit-working-directory = false
+
+# Empty values reset the configuration to the default value
+#font-family = ""
+#font-family = "MesloLGS NF"
+font-size = 18
+
+# Enable copy on text selection
+copy-on-select = clipboard
+
+# === Some useful documentation follows ===
+
+# === Some cli commands ===
+# Note: ghostty command will only work inside a ghostty terminal
+# List Fonts using cli:  ghostty +list-fonts
+# List Themes using cli: ghostty +list-themes
+
+# === My Fav Themes ===
+#theme = 3024 Night
+#theme = Adventure
+#theme = Andromeda
+#theme = Breeze
+#theme = "Bright Lights"
+#theme = Gruvbox-material
+#theme = Iceberg-dark
+#theme = MaterialDarker
+#theme = Neobones_dark
+#theme = RetroLegends
+#theme = Rippedcasts
+#theme = seoulbones_dark
+#theme = Terafox
