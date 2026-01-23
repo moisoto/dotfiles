@@ -17,6 +17,7 @@ alias gdec='gpg_decrypt'
 alias genca="gpg_armor_file_or_folder"
 alias gsig="gpg --sign --local-user $GPG_KEY_ID"
 alias gkey="gpg_getkey"
+alias chezcd='cd "$(chezmoi source-path)"'
 # ~/git-utils/git_drop.sh doesn't have a zsh alias. It's available as "git drop".
 
 # todo-txt
