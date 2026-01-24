@@ -1,11 +1,6 @@
 # Common Exports
 export GPG_TTY=$(tty)
-{{- if .config.secrets.gpg_key }}
 export GPG_KEY_ID="{{ .config.secrets.gpg_key }}"
-{{- else }}
-# No GPG key defined in chezmoi.toml → using default/fallback
-export GPG_KEY="default-placeholder-key"
-{{- end }}
 {{- if eq .config.machine.owner "dev.moisoto" }}
 export GOPRIVATE=github.com/moisoto/utils,github.com/MotivAIO/Jupiter-DB,github.com/MotivAIO/MotivDocsy
 {{- end }}
@@ -32,7 +27,7 @@ if [[ -d "$HOME/.local" ]]; then
 fi
 
 # Gemini Setings
-export GEMINI_API_KEY="put-your-gemini-apikey-here"
+export GEMINI_API_KEY="{{ .config.secrets.gemini_key }}"
 export GOOGLE_GENAI_USE_VERTEXAI=true
 
 # Set EDITOR (mainly for glow to know what to use)
