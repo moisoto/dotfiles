@@ -1,0 +1,45 @@
+{{- /*
+    Load the Homebrew todo-txt template
+*/ -}}
+{{- $brewPrefix := (output "brew" "--prefix" "todo-txt") | trim -}}
+{{- $tmplPath := printf "%s/todo.cfg" $brewPrefix -}}
+
+{{- if not (stat $tmplPath) -}}
+# ERROR: todo-txt configuration template not found at {{ $tmplPath }}
+{{- else -}}
+
+{{- $raw := include $tmplPath -}}
+
+{{- $home := .chezmoi.homeDir -}}
+{{- $todoDir := printf "export TODO_DIR=\"%s/Documents/todo-txt\"" $home -}}
+
+{{- /*
+    Replace TODO_DIR
+*/ -}}
+{{- $step1 := regexReplaceAll
+      "(?m)^export TODO_DIR=.*$"
+      $raw
+      $todoDir
+-}}
+
+{{- /*
+    Uncomment & replace COLOR_CONTEXT
+*/ -}}
+{{- $step2 := regexReplaceAll
+      "(?m)^#\\s*export COLOR_CONTEXT=.*$"
+      $step1
+      "export COLOR_CONTEXT=$$LIGHT_RED"
+-}}
+
+{{- /*
+    Uncomment & replace COLOR_DATE
+*/ -}}
+{{- $finalcfg := regexReplaceAll
+      "(?m)^#\\s*export COLOR_DATE=.*$"
+      $step2
+      "export COLOR_DATE=$$LIGHT_PURPLE"
+-}}
+
+{{ $finalcfg }}
+
+{{- end -}}
