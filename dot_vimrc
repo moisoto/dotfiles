@@ -49,7 +49,7 @@ endfunction
 
 augroup restore_cursor
   autocmd!
-  autocmd BufReadPost *.go,*.asm,*.c,*.cpp,*.h,*.py,*.dart,*.sh,*.zsh call RestoreCursor()
+  autocmd BufReadPost *.go,*.asm,*.c,*.cpp,*.h,*.py,*.dart,*.sh,*.zsh,*.md call RestoreCursor()
 augroup END
 "=== End Restore Cursor Logic ==="
 
