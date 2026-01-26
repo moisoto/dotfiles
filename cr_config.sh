@@ -7,6 +7,10 @@ filedir="${configfile%/*}"
 gpgkey=$(gpg --list-secret-keys --keyid-format LONG --with-colons | awk -F: '/^sec/ {print $5}' | tail -1)
 fullkey=$(gpg --list-secret-keys --keyid-format LONG --with-colons | grep "$gpgkey" | awk -F: '/^fpr/ {print $10}')
 
+if command -v gpg >/dev/null 2>&1; then
+  gpginst="yes"
+fi
+
 if [ "$fileext" != "toml" ]; then
   echo "Extension $fileext not supported."
   exit 1
@@ -36,7 +40,7 @@ case "$answer" in
     echo "id    = \"${USER}.$(scutil --get LocalHostName)\"" >> $configfile
     echo >> $configfile
     echo "[data.config.secrets]" >> $configfile
-    if [ -z "$gpgkey" ] ; then
+    if [[ -z "$gpginst" || -z "$fullkey" ]] ; then
       echo "gpg_key    = \"put-your-gpp-here\"" >> $configfile
       echo "gpg_defkey = \"put-your-default-gpg-here\"" >> $configfile
     else
