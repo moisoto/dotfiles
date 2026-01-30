@@ -133,6 +133,8 @@ function! ShouldRunFZF() abort
 
   " Define a whitelist of folders (modify this to your liking)
   let allowed_folders = [
+        \ '~/.config',
+        \ '~/.local',
         \ '~/Desktop',
         \ '~/Documents',
         \ '~/Library/CloudStorage/Dropbox/',
