@@ -4,9 +4,9 @@ This chezmoi repo includes a set of scripts that will be called by
 the startup script .zshrc and are located at `~/.zsh_custom`.
 
 These scripts contain the user configuration part of .zshrc
-(the rest of .zshrc will be the oh-my-zsh configuration.
+(the rest of .zshrc will be the oh-my-zsh configuration).
 
-This documents describe the tools, aliases and scripts contained in
+This document describes the tools, aliases and scripts contained in
 the scripts inside `.zsh_custom`.
 
 
@@ -22,7 +22,6 @@ These aliases are:
 | Interactive Git Commit | gcommit         | Alias to *commit.sh*            |
 | Git Full Diff          | gdf             | Alias to *git_df.sh*            |
 | Git Full Diff          | git df          | Git Alias for *git_df.sh*       |
-| Git Trail Trim         | trail-trim      | Alias to *git_tt.sh*            |
 | Git Trail Trim         | git tt          | Git Alias for *git_tt.sh*       |
 | Git Drop               | git drop        | Git Alias for *git_drop.sh*     |
 | Git Undo               | git undo        | Git Alias for *git_undo.sh*     |
@@ -50,7 +49,20 @@ This repository includes aliases and functions that simplify usage of TMUX & TMU
 | Description            | Command         | Type                                                     |
 |------------------------|-----------------|----------------------------------------------------------|
 | Muxinate               | muxinate        | Alias - Creates and starts a new TMUXINATOR session      |
-| TMUX Interactive       | muxi            | Function - Let's you select a TMUX Session interactively |  
+| TMUX Interactive       | muxi            | Function - Let's you select a TMUX Session interactively |
+
+
+## Functions for for klog
+
+A suit of functiones are included in this repo that simplify Klog usage:
+
+| Description            | Command         | Type                                  |
+|------------------------|-----------------|---------------------------------------|
+| Klog Report            | krep            | Function - Prints a klog Report       |
+| Klog Start Task        | kstart          | Function - Adds a new klog task       |
+| Klog Pause             | kpause          | Function - Pause current klog task    |
+| Klog Stop              | kstop           | Function - Finishes current klog task |
+
 
 ## Aliases for todo-txt
 
@@ -88,10 +100,12 @@ For listing files several aliases have been defined:
 
 ## Other aliases
 
-| Description        | Command         | Type                                 |
-|--------------------|-----------------|--------------------------------------|
-| Python             | python          | Alias to _python3_                   |
-| Python Pkg Mng     | pip             | Alias to _pip3_                      |
-| Trail Trim         | trail-trim      | Alias to *git_tt.sh*                 |
-| Apple Silicon Top  | asitop          | Alias to _sudo asitop_               |
-| Chezmoi Change Dir | chezcd          | Alias for changing to chezmoi folder |
+| Description        | Command         | Type                                  |
+|--------------------|-----------------|---------------------------------------|
+| Python             | python          | Alias to _python3_                    |
+| Python Pkg Mng     | pip             | Alias to _pip3_                       |
+| Trail Trim         | trail-trim      | Alias to *git_tt.sh*                  |
+| Apple Silicon Top  | asitop          | Alias to _sudo asitop_                |
+| Chezmoi Change Dir | chezcd          | Alias for changing to chezmoi folder  |
+| Reverse Paged Cat  | mcat            | Function - does a reverse paged cat   |
+| Vim File Picker    | vf              | Function - opens selected file in vim |
