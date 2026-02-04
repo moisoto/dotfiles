@@ -12,7 +12,7 @@ recommended you use [the guide](https://github.com/moisoto/macOS-dev-setup)
 instead, which will use this repository as part of the instructions.
 
 Otherwise, if you just want to use these scripts in your current setup, please check the [detailed
-documentation](https://github.com/moisoto/dotfiles/blob/main/docs/software.md).
+documentation](https://github.com/moisoto/dotfiles/blob/main/docs/README.md).
 
 ## Using this repository
 
