@@ -48,6 +48,7 @@ case "$answer" in
       echo "gpg_defkey = \"$fullkey\"" >> $configfile
     fi
     echo "gemini_key = \"put-your-gemini-apikey-here\"" >> $configfile
+    echo "anthropic_key = \"put-your-anthropic-apikey-here\"" >> $configfile
     echo "Config file created."
     ;;
   *)
