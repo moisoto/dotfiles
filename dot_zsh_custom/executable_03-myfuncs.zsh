@@ -17,16 +17,23 @@ function mtac()
 
 function vf()
 {
-  local curdir=$(pwd)
-  if [[ "$curdir" == "$HOME" ]] ; then
+  if [[ "$PWD" == "$HOME" ]] ; then
     echo "Running vf on the home directory is disabled"
     return 0
   fi
 
-  local ftl=$(fzf)
-  if [ ! -z "$ftl" ] ; then
+  local fzf_opts=(
+    --color='bg:#4B4B4B,bg+:#3F3F3F,info:#BDBB72,border:#6B6B6B,spinner:#98BC99'
+    --color='hl:#719872,fg:#D9D9D9,header:#719872,fg+:#D9D9D9'
+    --color='pointer:#E12672,marker:#E17899,prompt:#98BEDE,hl+:#98BC99'
+    --style=full
+    --height=~100%
+  )
+
+  local ftl=$(fzf "${fzf_opts[@]}")
+  if [[ -n "$ftl" ]] ; then
     echo "Running vim $ftl"
-    vim $ftl
+    vim "$ftl"
   else
     echo "No file was selected"
   fi
