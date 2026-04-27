@@ -1,10 +1,11 @@
 alias python=python3
 alias pip=pip3
+alias more="less -M -X -R"
 alias wadd="wd add"
 alias wls="wd list"
 alias lst="ls -lrt"
-alias lzt="eza -l --header --icons --git --group-directories-first --sort=modified --tree --level=3"
-alias lz="eza  -l --header --icons --git --group-directories-first --sort=modified"
+alias lzt="eza -l --header --icons --git --group-directories-first --sort=modified --color=always --tree --level=3"
+alias lz="eza  -l --header --icons --git --group-directories-first --sort=modified --color=always"
 alias gdf="~/git-utils/git_df.sh"        # Also available as git alias (use "git df" instead)
 alias gcommit="~/git-utils/commit.sh"    # Also available as git alias (use "git gcm" instead)
 alias trail-trim="~/git-utils/git_tt.sh" # Also available as git alias (use "git tt" instead)
