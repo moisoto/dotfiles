@@ -65,7 +65,8 @@ chezmoi cd
 # Create config file
 ./cr_config.sh
 ```
-These entries will be described and explained in the detailed documentation.
+These entries will be described and explained in the [detailed
+documentation](https://github.com/moisoto/dotfiles/blob/main/docs/README.md).
 
 ## Apply configuration
 
