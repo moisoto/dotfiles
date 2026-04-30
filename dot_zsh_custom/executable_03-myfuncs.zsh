@@ -428,3 +428,65 @@ function kstop() {
     klog pause @current --summary="$*"
   fi
 }
+
+md2csv() {
+  if [[ -z "$1" ]]; then
+    echo "Converts a Markdown table to csv format."
+    echo "Usage: md2csv <input.md> [output.csv]" >&2
+    echo
+    echo "*** For better results use a .md file that only contains a table ***"
+    return 1
+  fi
+
+  local input="$1"
+  local output="$2"
+
+  if [[ ! -f "$input" ]]; then
+    echo "File not found: $input" >&2
+    return 1
+  fi
+
+  if [[ -n "$output" ]]; then
+    # Check if output file already exists
+    if [[ -f "$output" ]]; then
+      echo "Error: Output file already exists: $output" >&2
+      echo "Remove it first or choose a different name." >&2
+      return 1
+    fi
+
+    # === Clean + properly quoted CSV ===
+    awk -F'\\|' '
+      BEGIN { OFS="," }
+      {
+        # Skip separator lines
+        if ($0 ~ /^\s*[\-:|]+\s*$/) next
+
+        # Process each real row
+        for (i = 2; i < NF; i++) {
+          field = $i
+          # Trim spaces
+          gsub(/^[[:space:]]+|[[:space:]]+$/, "", field)
+
+          # Quote if:
+          #   - contains comma, quote, space, or newline
+          #   - is empty
+          #   - starts with 0 followed by digits (preserve leading zeros)
+          if (field ~ /[," \n]/ || field == "" || field ~ /^0[0-9]+$/) {
+            gsub(/"/, "\"\"", field)
+            field = "\"" field "\""
+          }
+
+          printf "%s%s", field, (i < NF-1 ? OFS : ORS)
+        }
+      }
+    ' "$input" > "$output"
+
+    echo "Converted: $input → $output (clean & properly quoted CSV)"
+  else
+    # === Pretty output to terminal ===
+    sed -e 's/^|//' \
+        -e 's/|$//' \
+        -e 's/|/,/g' "$input" \
+    | grep -v '\-\-\-'
+  fi
+}
