@@ -446,7 +446,53 @@ md2csv() {
     return 1
   fi
 
-  if [[ -n "$output" ]]; then
+  # === Clean + properly quoted CSV ===
+  local awk_cmd='
+    BEGIN { OFS=","; col_count = 0 }
+    {
+      # Skip separator lines
+      if ($0 ~ /^\s*\|?[-:| ]+\|?\s*$/) next
+
+      line = $0
+
+      # trim leading spaces
+      gsub(/^\s+/, "", line)
+
+      # Normalize: ensure line starts and ends with |
+      # This makes splitting consistent for both styles
+      if (line !~ /^\s*\|/) line = "|" line
+      if (line !~ /\|\s*$/) line = line "|"
+
+      # Now split by |
+      n = split(line, fields, /\|/)
+
+      # On first data row, detect column count
+      if (col_count == 0) {
+        col_count = n
+      }
+
+      # Process each row
+      for (i = 2; i < col_count; i++) {
+        field = fields[i] ? fields[i] : ""
+
+        # Trim spaces
+        gsub(/^[[:space:]]+|[[:space:]]+$/, "", field)
+
+        # Quote if:
+        #   - contains comma, quote, space, or newline
+        #   - is empty
+        #   - starts with 0 followed by digits (preserve leading zeros)
+        if (field ~ /[,"\n]/ || field == "" || field ~ /^0[0-9]+$/) {
+          gsub(/"/, "\"\"", field)
+          field = "\"" field "\""
+        }
+
+        printf "%s%s", field, (i < col_count-1 ? OFS : ORS)
+      }
+    }
+  '
+
+  if [[ -n "$output" ]]; then # Output to file
     # Check if output file already exists
     if [[ -f "$output" ]]; then
       echo "Error: Output file already exists: $output" >&2
@@ -454,39 +500,16 @@ md2csv() {
       return 1
     fi
 
-    # === Clean + properly quoted CSV ===
-    awk -F'\\|' '
-      BEGIN { OFS="," }
-      {
-        # Skip separator lines
-        if ($0 ~ /^\s*[\-:|]+\s*$/) next
-
-        # Process each real row
-        for (i = 2; i < NF; i++) {
-          field = $i
-          # Trim spaces
-          gsub(/^[[:space:]]+|[[:space:]]+$/, "", field)
-
-          # Quote if:
-          #   - contains comma, quote, space, or newline
-          #   - is empty
-          #   - starts with 0 followed by digits (preserve leading zeros)
-          if (field ~ /[," \n]/ || field == "" || field ~ /^0[0-9]+$/) {
-            gsub(/"/, "\"\"", field)
-            field = "\"" field "\""
-          }
-
-          printf "%s%s", field, (i < NF-1 ? OFS : ORS)
-        }
-      }
-    ' "$input" > "$output"
-
-    echo "Converted: $input → $output (clean & properly quoted CSV)"
-  else
-    # === Pretty output to terminal ===
-    sed -e 's/^|//' \
-        -e 's/|$//' \
-        -e 's/|/,/g' "$input" \
-    | grep -v '\-\-\-'
+    awk -F'\\|' "$awk_cmd" "$input" > "$output"
+    echo "Converted: $input → $output" >&2
+  else # Output to terminal
+    if [[ -t 1 ]] && command -v bat >/dev/null 2>&1; then
+      # [[ -t 1 ]] → checks if file descriptor 1 (stdout) is connected to a terminal.
+      # If so, use bat with CSV syntax highlighting
+      awk -F'\\|' "$awk_cmd" "$input" | bat --color=always --language=csv
+    else
+      # Fallback to plain output
+      awk -F'\\|' "$awk_cmd" "$input"
+    fi
   fi
 }
