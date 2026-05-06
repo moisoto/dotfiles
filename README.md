@@ -68,16 +68,29 @@ chezmoi cd
 These entries will be described and explained in the [detailed
 documentation](https://github.com/moisoto/dotfiles/blob/main/docs/README.md).
 
-## Apply configuration
 
-Now you are ready to apply the configuration files to your machine.
-But first let's check how what changes will be applied to your current configuration:
+## Verify Status & Changes
+
+Before you apply changes to your current configuration using chezmoi, it is important
+to check for any issues in your chezmoi files (missing config keys, syntax errors on
+your templates, etc). For this we use:
+
+```shell
+chezmoi status
+```
+
+If everything is fine, this command will tell you what files will be created, modified or deleted from your system.
+In case there is any issue with your chezmoi files, it will instead point them out.
+
+After you verify the status, you should check what changes will be applied to your current configuration:
 
 ```shell
 chezmoi diff
 ```
 
-If you are satisfied with the changes, apply them:
+## Apply configuration
+
+If you are satisfied with the changes that will be made to your configuration files, apply them to your machine:
 
 ```shell
 chezmoi apply
