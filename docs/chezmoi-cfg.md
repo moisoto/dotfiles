@@ -17,6 +17,7 @@ id    = "machine-id"
 gpg_key    = "default-short-gpg-key"
 gpg_defkey = "default-long-gpg-key"
 gemini_key = "put-your-gemini-apikey-here"
+anthropic_key = "put-your-anthropic-apikey-here"
 ```
 
 ## Machine section fields
@@ -50,4 +51,4 @@ They are used as follows:
 * **gpg_key:** It will be used as default by some aliases/functions included in this repo.
 * **gpg_defkey:** It's used in the GPG configuration file.
 * **gemini_key:** Needed for Google's Gemini Coding Assistant.
-
+* **anthropic_key:** Needed for Claude Code agentic coding assistant.
