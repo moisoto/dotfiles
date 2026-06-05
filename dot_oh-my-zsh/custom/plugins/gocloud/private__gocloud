@@ -1,0 +1,13 @@
+#compdef gocloud
+
+_gocloud() {
+    local cloud_docs="${HOME}/Library/Mobile Documents/com~apple~CloudDocs"
+    local cur_dir=$(pwd)
+
+    # If inside $cloud_docs then use current folder for completion
+    if [[ "$cur_dir" == "$cloud_docs"/* ]]; then
+     cloud_docs="$cur_dir"
+    fi
+
+    _path_files -W "$cloud_docs"
+}
