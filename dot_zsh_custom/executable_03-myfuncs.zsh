@@ -1,3 +1,25 @@
+# xcat: Prettify XML files
+function xcat()
+{
+  if [[ "$1" == "--help" ]]; then
+    echo "xcat:  Prettify XML files."
+    echo "Usage: xcat filename"
+    return 0
+  fi
+
+  if [[ -z "$1" ]]; then
+    echo "Error: No file specified. Use --help for usage."
+    return 1
+  fi
+
+  # Check if bat is installed
+  if command -v bat >/dev/null 2>&1; then
+    xmllint --format "$1" | bat
+  else
+    xmllint --format "$1"
+  fi
+}
+
 # mtac: Reverse of cat with a healthy dose of more
 function mtac()
 {
