@@ -21,7 +21,6 @@ alias gkey="gpg_getkey"
 alias chezcd='cd "$(chezmoi source-path)"'
 alias bleaves='HOMEBREW_NO_ENV_HINTS=1 brew deps --tree --installed $(brew leaves)'
 alias jq="jq -C"
-alias pubip='echo "IPv4: $(curl -s -4 ifconfig.me)"; echo "IPv6: $(curl -s -6 ifconfig.me)"'
 alias pubip4='echo $(curl -s -4 ifconfig.me)'
 alias pipinf="curl -s ifconfig.me/all | sed $'s/^[^:]*:/\x1b[38;5;117m&\x1b[0m/'"
 # ~/git-utils/git_drop.sh doesn't have a zsh alias. It's available as "git drop".

@@ -1,3 +1,22 @@
+function pubip()
+{
+  local ipv4 ipv6
+
+  ipv4=$(curl -4 -s --connect-timeout 2 "ifconfig.me")
+  if [[ -z "$ipv4" ]]; then
+    echo "Failed to retrieve public IPv4 address."
+  else
+    echo "IPv4: $ipv4"
+  fi
+
+  ipv6=$(curl -6 -s --connect-timeout 2 "ifconfig.me")
+  if [[ -z "$ipv6" || "$ipv6" == "$ipv4" ]]; then
+    echo "Failed to retrieve public IPv6 address."
+  else
+    echo "IPv6: $ipv6"
+  fi
+}
+
 # xcat: Prettify XML files
 function xcat()
 {
