@@ -56,6 +56,41 @@ function mtac()
   tail -r "$1" | more
 }
 
+ghurl() {
+    # Get remote URL and check if it's GitHub
+    local remote_url
+    remote_url=$(git remote get-url origin 2>/dev/null)
+
+    if [[ $remote_url != *"github.com"* ]]; then
+        echo "✖ Not a GitHub repository" >&2
+        return 1
+    fi
+
+    # Extract owner/repo
+    local repo
+    repo=$(echo "$remote_url" | sed -E 's#.*github.com[:/]([^/]+/[^/.]+)(\.git)?$#\1#')
+
+    # Determine SHA length
+    local sha
+    if [[ "$1" == "-l" || "$1" == "--long" ]]; then
+        sha=$(git rev-parse HEAD)           # Full SHA
+        local mode="full"
+    else
+        sha=$(git rev-parse --short=8 HEAD) # Short SHA (default)
+        local mode="short"
+    fi
+
+    local url="https://github.com/${repo}/commit/${sha}"
+
+    # Output
+    echo "$url"
+
+    # Copy to clipboard (macOS)
+    echo -n "$url" | pbcopy
+    echo "Github Last Commit URL: $url"
+    echo "Also Copied to clipboard! (using ${mode} SHA)"
+}
+
 function vf()
 {
   if [[ "$PWD" == "$HOME" ]] ; then
