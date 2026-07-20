@@ -1,5 +1,6 @@
 alias python=python3
 alias pip=pip3
+alias fp='fzf --preview "bat --style=numbers --color=always --line-range=:500 {}"'
 alias more="less -M -X -R"
 alias wadd="wd add"
 alias wls="wd list"

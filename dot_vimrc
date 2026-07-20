@@ -58,6 +58,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-fugitive'
 Plug '/opt/homebrew/opt/fzf'
+Plug 'junegunn/fzf.vim'
 "Folding Plugins
 Plug 'tmhedberg/SimpylFold'
 Plug 'octol/vim-cpp-enhanced-highlight'
@@ -99,6 +100,8 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#fugitive#enabled = 1
 let g:airline_theme = 'understated'
 
+let g:fzf_preview_window = ['right:60%', 'ctrl-/']
+
 " Customize fzf colors to match your color scheme
 " - fzf#wrap translates this to a set of `--color` options
 let g:fzf_colors =
@@ -118,9 +121,9 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 "===
-" Logic for FZF autorun
+" Logic for :Files autorun using fzf.vim
 "===
-function! ShouldRunFZF() abort
+function! ShouldRunFiles() abort
   " Don't run if files were passed
   if argc() > 0
     return 0
@@ -166,11 +169,11 @@ function! ShouldRunFZF() abort
   return 0
 endfunction
 
-augroup AutoFZFOnStart
+augroup AutoFilesOnStart
   autocmd!
-  autocmd VimEnter * if ShouldRunFZF() | call feedkeys(":silent! FZF\<CR>", 'n') | endif
+  autocmd VimEnter * if ShouldRunFiles() | call timer_start(0, {-> execute('Files')}) | endif
 augroup END
-"=== End launch FZF Logic ==="
+"=== End :Files autorun Logic ==="
 
 " My Fav Themes
 " let g:airline_theme = 'papercolor'
