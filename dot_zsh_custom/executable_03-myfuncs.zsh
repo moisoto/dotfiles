@@ -52,7 +52,6 @@ function mtac()
     echo "Error: No file specified. Use --help for usage."
     return 1
   fi
-
   tail -r "$1" | more
 }
 
@@ -83,12 +82,12 @@ ghurl() {
     local url="https://github.com/${repo}/commit/${sha}"
 
     # Output
-    echo "$url"
+    echo "Github Last Commit URL (using ${mode} SHA):"
+    echo "$url\n"
 
     # Copy to clipboard (macOS)
     echo -n "$url" | pbcopy
-    echo "Github Last Commit URL: $url"
-    echo "Also Copied to clipboard! (using ${mode} SHA)"
+    echo "Also Copied to clipboard!\n"
 }
 
 function vf()
