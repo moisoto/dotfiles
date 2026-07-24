@@ -94,6 +94,7 @@ nnoremap <leader>r <Cmd>History<CR>
 nnoremap <leader>gs <Cmd>Git<CR>
 nnoremap <leader>gl <Cmd>Git log<CR>
 nnoremap <leader>gb <Cmd>Git blame<CR>
+nnoremap <leader>gd <Cmd>Gdiffsplit<CR>
 
 " --- Folding configuration ---
 augroup FoldingConfigs

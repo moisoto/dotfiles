@@ -14,6 +14,7 @@ alias gdf="~/git-utils/git_df.sh"        # Also available as git alias (use "git
 alias gcommit="~/git-utils/commit.sh"    # Also available as git alias (use "git gcm" instead)
 alias trail-trim="~/git-utils/git_tt.sh" # Also available as git alias (use "git tt" instead)
 alias glow="glow -w0 -p"                 # Disable line wrap and use pagination
+alias glowt="command glow -w0 -t"                 # Disable line wrap and use pagination
 alias ls-dataless="~/icloud-utils/ls-dataless.sh"
 alias meminfo="memory_pressure | sed -E 's/(.*:[[:space:]]*)$/\x1b[38;5;117m\1\x1b[0m/' && echo && top -l 1 | grep --color=never -E 'PhysMem|MemRegions'"
 alias muxinate='echo $PWD|pbcopy ; tmuxinator new ${PWD##*/} ; tmuxinator start ${PWD##*/}'
