@@ -78,6 +78,27 @@ set foldlevelstart=99
 " Remap space key to toggle fold command
 nnoremap <space> za
 
+"=== Cycle Colorscheme
+" Use \cs for next
+" Use \cb for previous
+"===
+function! CycleColorScheme(step)
+  let l:list = getcompletion('', 'color')
+  let l:current = get(g:, 'colors_name', 'default')
+  let l:index = index(l:list, l:current)
+  if l:index == -1
+    let l:index = 0
+  endif
+
+  let l:index = (l:index + a:step + len(l:list)) % len(l:list)
+  execute 'colorscheme' l:list[l:index]
+  echomsg 'Colorscheme:' . l:list[l:index]
+endfunction
+
+nnoremap <silent> <leader>cs <Cmd>call CycleColorScheme(1)<CR>
+nnoremap <silent> <leader>cb <Cmd>call CycleColorScheme(-1)<CR>
+"=== End Colorscheme Cycle Logic ==="
+
 " --- Window Navigation Remaps ---
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
