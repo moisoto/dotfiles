@@ -115,6 +115,28 @@ function vf()
   fi
 }
 
+function td()
+{
+  if (( $# < 1 )) || [[ $1 == --help || $1 == -h ]]; then
+    printf "Usage: \033[38;5;117mtd <list> <todo.sh command> [args...]\033[0m\n\n"
+    printf "Examples:\n"
+    printf "\033[38;5;117m  td movies add \"Watch GoT\" \033[38;5;114m# Add new task to list movies.\033[0m\n"
+    printf "\033[38;5;117m  td movies ls              \033[38;5;114m# Show items from list movies.\033[0m\n"
+    printf "\033[38;5;117m  td movies do 2            \033[38;5;114m# Mark item #2 from list movies as done.\033[0m\n\n"
+    printf "\033[38;5;117m  td shores add \"Buy milk\"  \033[38;5;114m# Add new task to list shores.\033[0m\n"
+    printf "\033[38;5;117m  td shores list            \033[38;5;114m# Show items from list shores.\033[0m\n"
+    printf "\033[38;5;117m  td shores                 \033[38;5;114m# Will also show items from list shores.\033[0m\n\n"
+    printf "For more info use:\n"
+    printf "\033[38;5;117m  todo.sh -h\033[0m\n"
+    return 1
+  fi
+
+  local list=$1
+  shift
+
+  TODO_LIST=$list todo.sh "$@"
+}
+
 function muxi()
 {
   if ! command -v gum &> /dev/null; then

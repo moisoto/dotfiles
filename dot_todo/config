@@ -1,0 +1,7 @@
+export TODO_DIR="$HOME/Documents/todo-txt"
+
+export TODO_LIST="${TODO_LIST:-todo}"
+
+export TODO_FILE="$TODO_DIR/$TODO_LIST.txt"
+export DONE_FILE="$TODO_DIR/$TODO_LIST.done.txt"
+export REPORT_FILE="$TODO_DIR/$TODO_LIST.report.txt"
