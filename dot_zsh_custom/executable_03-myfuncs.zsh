@@ -52,6 +52,7 @@ function mtac()
     echo "Error: No file specified. Use --help for usage."
     return 1
   fi
+
   tail -r "$1" | more
 }
 
@@ -205,7 +206,7 @@ function muxi()
   fi
 }
 
-md2csv() {
+function md2csv() {
   if [[ -z "$1" ]]; then
     echo "Converts a Markdown table to csv format."
     echo "Usage: md2csv <input.md> [output.csv]" >&2
@@ -288,4 +289,24 @@ md2csv() {
       awk -F'\\|' "$awk_cmd" "$input"
     fi
   fi
+}
+
+function brewserv() {
+  local services service pid
+  services=$(brew services list)
+
+  printf "\033[38;5;117m=== Brew Services Status ===\033[0m\n"
+  printf "$services\n\n"
+
+  echo "$services" | awk 'NR > 1 && $2 == "started" { print $1 }' |
+  while read -r service; do
+    pid=$(launchctl print "gui/$(id -u)/homebrew.mxcl.$service" 2>/dev/null |
+    awk '/pid =/ { print $3; exit }')
+
+    [[ -n $pid ]] || continue
+
+    printf "\033[38;5;117m=== $service ===\033[0m\n"
+    ps -o pid,lstart,etime,%cpu,%mem,command -p "$pid"
+    echo
+  done
 }
