@@ -295,6 +295,11 @@ function brewserv() {
   local services service pid
   services=$(brew services list)
 
+  if [[ -z $services ]]; then
+    # No need to give an error since brew will send it to stderr
+    return 0
+  fi
+
   printf "\033[38;5;117m=== Brew Services Status ===\033[0m\n"
   printf "$services\n\n"
 
