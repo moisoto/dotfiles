@@ -292,8 +292,11 @@ function md2csv() {
 }
 
 function brewserv() {
-  local services service pid
+  local services service pid rv
   services=$(brew services list)
+
+  rv=$?
+  (( rv == 0 )) || return $rv
 
   if [[ -z $services ]]; then
     # No need to give an error since brew will send it to stderr
