@@ -24,7 +24,7 @@ alias genca="gpg_armor_file_or_folder"
 alias gsig="gpg --sign --local-user $GPG_KEY_ID"
 alias gkey="gpg_getkey"
 alias chezcd='cd "$(chezmoi source-path)"'
-alias bleaves='HOMEBREW_NO_ENV_HINTS=1 brew deps --tree --installed $(brew leaves)'
+alias bleaves='brewtree'
 alias jq="jq -C"
 alias pubip4='echo $(curl -s -4 ifconfig.me)'
 alias pipinf="curl -s ifconfig.me/all | sed $'s/^[^:]*:/\x1b[38;5;117m&\x1b[0m/'"

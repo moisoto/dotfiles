@@ -318,3 +318,23 @@ function brewserv() {
     echo
   done
 }
+
+brewtree() {
+    local green_bold=$'\033[1;32m'
+    local dim=$'\033[2m'
+    local reset=$'\033[0m'
+
+    HOMEBREW_NO_ENV_HINTS=1 brew deps --tree --installed $(brew leaves) |
+    while IFS= read -r line; do
+        if [[ $line == [[:alpha:]]* ]]; then
+            # Top-level Homebrew leaf
+            printf '%s%s%s\n' "$green_bold" "$line" "$reset"
+        elif [[ $line =~ ^(.*[├└│─]──[[:space:]]*)(.*)$ ]]; then
+            # Dim the tree connector, keep package name normal
+            printf '%s%s%s%s\n' \
+                "$dim" "${match[1]}" "$reset" "${match[2]}"
+        else
+            printf '%s\n' "$line"
+        fi
+    done
+}
