@@ -10,11 +10,9 @@ alias lz="eza  -l --header --icons --git --group-directories-first --sort=modifi
 alias grso="git remote show origin"
 alias gcso="git config --list --show-origin --show-scope"
 alias gstat="git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git cstat | less -R || echo 'fatal: not a git repository'"
-alias gdf="~/git-utils/git_df.sh"        # Also available as git alias (use "git df" instead)
-alias gcommit="~/git-utils/commit.sh"    # Also available as git alias (use "git gcm" instead)
-alias trail-trim="~/git-utils/git_tt.sh" # Also available as git alias (use "git tt" instead)
-alias glow="glow -w0 -p"                 # Disable line wrap and use pagination
-alias glowt="command glow -w0 -t"                 # Disable line wrap and use pagination
+alias gdf="git-df" # Also available as git external command (use "git df" instead)
+alias glow="glow -w0 -p" # Disable line wrap and use pagination
+alias glowt="command glow -w0 -t" # Disable line wrap and use tui paginated mode
 alias ls-dataless="~/icloud-utils/ls-dataless.sh"
 alias meminfo="memory_pressure | sed -E 's/(.*:[[:space:]]*)$/\x1b[38;5;117m\1\x1b[0m/' && echo && top -l 1 | grep --color=never -E 'PhysMem|MemRegions'"
 alias muxinate='echo $PWD|pbcopy ; tmuxinator new ${PWD##*/} ; tmuxinator start ${PWD##*/}'
@@ -28,7 +26,6 @@ alias bleaves='brewtree'
 alias jq="jq -C"
 alias pubip4='echo $(curl -s -4 ifconfig.me)'
 alias pipinf="curl -s ifconfig.me/all | sed $'s/^[^:]*:/\x1b[38;5;117m&\x1b[0m/'"
-# ~/git-utils/git_drop.sh doesn't have a zsh alias. It's available as "git drop".
 
 # todo-txt
 export TODOTXT_DEFAULT_ACTION=ls
