@@ -8,38 +8,31 @@
 # ERROR: todo-txt configuration template not found at {{ $tmplPath }}
 {{- else -}}
 
-{{- $raw := include $tmplPath -}}
+{{ include $tmplPath }}
 
-{{- $home := .chezmoi.homeDir -}}
-{{- $todoDir := printf "export TODO_DIR=\"%s/Documents/todo-txt\"" $home -}}
+# === CONFIG OVERRIDES ===
 
-{{- /*
-    Replace TODO_DIR
-*/ -}}
-{{- $step1 := regexReplaceAll
-      "(?m)^export TODO_DIR=.*$"
-      $raw
-      $todoDir
--}}
+TODO_DIR="$HOME/Documents/todo-txt"
+TODO_LIST="${TODO_LIST:-todo}"
+export TODO_DIR TODO_LIST
 
-{{- /*
-    Uncomment & replace COLOR_CONTEXT
-*/ -}}
-{{- $step2 := regexReplaceAll
-      "(?m)^#\\s*export COLOR_CONTEXT=.*$"
-      $step1
-      "export COLOR_CONTEXT=$$LIGHT_RED"
--}}
+TODO_FILE="$TODO_DIR/$TODO_LIST.txt"
+DONE_FILE="$TODO_DIR/$TODO_LIST.done.txt"
+REPORT_FILE="$TODO_DIR/$TODO_LIST.report.txt"
+export TODO_FILE DONE_FILE REPORT_FILE
 
-{{- /*
-    Uncomment & replace COLOR_DATE
-*/ -}}
-{{- $finalcfg := regexReplaceAll
-      "(?m)^#\\s*export COLOR_DATE=.*$"
-      $step2
-      "export COLOR_DATE=$$LIGHT_PURPLE"
--}}
+# Default Colored Priorities
+export PRI_A=$YELLOW       # Color for A priority
+export PRI_B=$GREEN        # Color for B priority
+export PRI_C=$LIGHT_BLUE   # Color for C priority
 
-{{ $finalcfg }}
+# Additional Colored Priorities
+export PRI_D=$LIGHT_PURPLE # Color for D priority
+export PRI_E=$LIGHT_CYAN   # Color for E priority
+export PRI_F=$LIGHT_RED    # Color for F priority
+
+# Change Context and Date colors
+export COLOR_CONTEXT=$BLUE
+export COLOR_DATE=$LIGHT_GREEN
 
 {{- end -}}
