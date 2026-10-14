@@ -7,10 +7,11 @@ GIT_AUTO_FETCH_TTL=7200
 
 # Hook into change directory action
 chpwd() {
+  local now last repo
+
   now=$EPOCHSECONDS # zsh built-in, current time in seconds
   if git rev-parse --is-inside-work-tree &>/dev/null; then
     if git config --get remote.origin.url &>/dev/null; then
-        local repo
         repo=$(git rev-parse --show-toplevel)
         last=${FETCHED_REPOS[$repo]:-0} # default 0 if never fetched
         if (( now - last > GIT_AUTO_FETCH_TTL )); then
