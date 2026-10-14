@@ -141,6 +141,7 @@ function td()
     return 1
   fi
 
+  local todocmd
   local list=$1
   shift
 
@@ -148,8 +149,18 @@ function td()
     "${EDITOR:-vi}" "$TODO_FILE"
   elif [[ "$1" == "edit" ]]; then
     "${EDITOR:-vi}" "$TODO_DIR/$list.txt"
-  else # Call todo.sh
-    TODO_LIST=$list todo.sh "$@"
+  elif [[ -f "$TODO_DIR/$list.txt" ]]; then
+    todocmd="$@"
+    TODO_LIST=$list todo.sh $todocmd 2>/dev/null || echo "Unrecognized todo-txt command \"$todocmd\"."
+  else
+    todocmd=("$list" "$@") # Include $list in todo-txt command
+    todo.sh "${todocmd[@]}" 2>/dev/null ||
+    {
+      echo "Unrecognized todo-txt command \"$todocmd\"."
+      echo "If you want to work with \"$list.txt\" please first create it with:"
+      echo "  td $list.txt edit"
+      echo
+    }
   fi
 }
 
