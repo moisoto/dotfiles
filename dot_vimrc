@@ -27,10 +27,15 @@ autocmd FileType asm setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab " A
 autocmd FileType sql setlocal tabstop=4 shiftwidth=4 noexpandtab " SQL uses tabs
 
 " Formatter commands for manual formatting
-autocmd FileType sh,bash,zsh command! -buffer FormatShfmt %!shfmt -i 2
-autocmd FileType kotlin command! -buffer FormatKtlint %!ktlint --format
-autocmd FileType ruby command! -buffer FormatRuboCop %!rubocop -a
+"-- Shell (brew install shfmt)
+"autocmd FileType sh,bash,zsh command! -buffer FormatShfmt %!shfmt -i 2
+"-- Kotlin (brew install ktlint) - Dependency: openjdk
+"autocmd FileType kotlin command! -buffer FormatKtlint %!ktlint --format --stdin
+"-- Rust (installed by cargo)
 autocmd FileType rust command! -buffer FormatRustfmt %!rustfmt
+"-- SQL Server (npm install -g sql-formatter)
+"autocmd FileType sql command! -buffer FormatSQL %!sql-formatter -l tsql
+"== End formatter commands ==
 
 " Command to toggle between tabs and spaces
 command! UseTabs set noexpandtab
